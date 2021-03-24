@@ -69,6 +69,16 @@ def find_two_min():
     weights_dic.pop(min_key_2)
     return (min_key_1, min_value_1, min_key_2, min_value_2)
 
+###########################################################################
+
+def find_node(value):
+    for node in node_list:
+        if node.value == value:
+            return node
+    return 0
+
+###########################################################################
+
 def create_tree():
     weight = 0
     while( weight < tree_weight ):
@@ -76,8 +86,14 @@ def create_tree():
         weight = min_value_1 + min_value_2
         weights_dic[weight] = weight
 
-        new_node_1 = Node.create_new_node( min_key_1, min_value_1, None, None, None )
-        new_node_2 = Node.create_new_node( min_key_2, min_value_2, None, None, None )
+        new_node_1 = find_node(min_key_1)
+        if new_node_1 == 0:
+            new_node_1 = Node.create_new_node( min_key_1, min_value_1, None, None, None )
+
+        new_node_2 = find_node(min_key_2)
+        if new_node_2 == 0:
+            new_node_2 = Node.create_new_node( min_key_2, min_value_2, None, None, None )
+
         if( new_node_1.weight < new_node_2.weight ):
             new_parent = Node.create_new_node( weight, weight, None, new_node_1, new_node_2 )
         else:
@@ -85,6 +101,24 @@ def create_tree():
         new_node_1.parent = new_parent
         new_node_2.parent = new_parent
 
+###########################################################################
+
+def find_char_code(char):
+    code = ""
+    node_list.reverse()
+    for node in node_list:
+        if( node.value == char ):
+            break
+    print(node.value)
+    while( node.weight != tree_weight ): 
+        if node == node.parent.left:
+            code = "0"+code
+        else:
+            code = "1"+code
+        node = node.parent
+        
+    return code
+
+###########################################################################
 
 create_tree()
-print(node_list[len(node_list)-1].left)
