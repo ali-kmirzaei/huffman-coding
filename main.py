@@ -53,33 +53,32 @@ class Node:
 ###########################################################################
 ###########################################################################
 
-def find_min():
-    min_value = 10000
+def find_two_min():
+    min_value_1 = 10000
+    min_value_2 = 10000
     for char in weights_dic:
-        if( weights_dic[char] < min_value ):
-            min_value = weights_dic[char]
-            min_key = char
-    weights_dic.pop(min_key)
-    return min_key, min_value
+        if( weights_dic[char] < min_value_1 ):
+            min_value_1 = weights_dic[char]
+            min_key_1 = char
+        elif( weights_dic[char] < min_value_2 ):
+            min_value_2 = weights_dic[char]
+            min_key_2 = char
+
+    weights_dic.pop(min_key_1)
+    weights_dic.pop(min_key_2)
+    return (min_key_1, min_value_1, min_key_2, min_value_2)
 
 def create_tree():
-    min_key_1, min_value_1 = find_min()
-    min_key_2, min_value_2 = find_min()
-    weight = min_value_1 + min_value_2
-    new_node = Node.create_new_node( min_key_1, min_value_1, None, None )
-    new_node = Node.create_new_node( min_key_2, min_value_2, None, None )
-    new_parent = Node.create_new_node( weight, weight, min_key_1, min_key_2 )
-
+    weight = 0
     while weight < tree_weight:
-        min_key_1, min_value_1 = find_min()
+        min_key_1, min_value_1, min_key_2, min_value_2 = find_two_min()
+        weight = min_value_1 + min_value_2
         new_node = Node.create_new_node( min_key_1, min_value_1, None, None )
-        weight = min_value_1 + new_parent.weight
-    
-        if min_value_1 < new_parent.weight:
-            new_parent = Node.create_new_node( weight, weight, new_node, new_parent )
-        else:
-            new_parent = Node.create_new_node( weight, weight, new_parent, new_node )
+        new_node = Node.create_new_node( min_key_2, min_value_2, None, None )
+        new_parent = Node.create_new_node( weight, weight, min_key_1, min_key_2 )
+        weights_dic[weight] = weight
+
 
 
 create_tree()
-print(node_list[len(node_list)-1])
+print(node_list[len(node_list)-1].weight)
