@@ -1,3 +1,0 @@
-hello ali
-im ali
-end
