@@ -38,14 +38,15 @@ weights_dic = {
 ###########################################################################
 
 class Node:
-    def __init__(self, value, weight, left, right):
+    def __init__(self, value, weight, parent, left, right):
         self.value = value
         self.weight = weight
+        self.parent = parent
         self.left = left
         self.right = right
 
-    def create_new_node(value, weight, left, right):
-        new_node = Node( value, weight, left, right )
+    def create_new_node(value, weight, parent, left, right):
+        new_node = Node( value, weight, parent, left, right )
         node_list.append(new_node)
         return new_node
 
@@ -70,15 +71,20 @@ def find_two_min():
 
 def create_tree():
     weight = 0
-    while weight < tree_weight:
+    while( weight < tree_weight ):
         min_key_1, min_value_1, min_key_2, min_value_2 = find_two_min()
         weight = min_value_1 + min_value_2
-        new_node = Node.create_new_node( min_key_1, min_value_1, None, None )
-        new_node = Node.create_new_node( min_key_2, min_value_2, None, None )
-        new_parent = Node.create_new_node( weight, weight, min_key_1, min_key_2 )
         weights_dic[weight] = weight
 
+        new_node_1 = Node.create_new_node( min_key_1, min_value_1, None, None, None )
+        new_node_2 = Node.create_new_node( min_key_2, min_value_2, None, None, None )
+        if( new_node_1.weight < new_node_2.weight ):
+            new_parent = Node.create_new_node( weight, weight, None, new_node_1, new_node_2 )
+        else:
+            new_parent = Node.create_new_node( weight, weight, None, new_node_2, new_node_1 )
+        new_node_1.parent = new_parent
+        new_node_2.parent = new_parent
 
 
 create_tree()
-print(node_list[len(node_list)-1].weight)
+print(node_list[len(node_list)-1].left)
