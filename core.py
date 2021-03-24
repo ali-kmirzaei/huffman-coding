@@ -103,13 +103,12 @@ def create_tree():
 
 ###########################################################################
 
-def find_char_code(char):
+def get_code_of_char(char):
     code = ""
     node_list.reverse()
     for node in node_list:
         if( node.value == char ):
             break
-    print(node.value)
     while( node.weight != tree_weight ): 
         if node == node.parent.left:
             code = "0"+code
@@ -118,6 +117,17 @@ def find_char_code(char):
         node = node.parent
         
     return code
+
+###########################################################################
+
+def get_char_of_code(code):
+    node = node_list[len(node_list)-1]
+    for num in code:
+        if int(num) == 0:
+            node = node.left
+        else:
+            node = node.right
+    return node.value
 
 ###########################################################################
 
